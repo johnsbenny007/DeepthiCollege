@@ -12,7 +12,7 @@
     overflow: hidden;
     align-items: center;
     margin-left:280px;
-    margin-bottom: 50px;
+    margin-bottom: 150px;
     
 }
 
@@ -67,7 +67,7 @@
     }
 }
 .College{
-    margin-bottom:100px;
+    margin-bottom:150px;
 }
 /* styles.css */
 
@@ -119,3 +119,34 @@
 .contact-box p {
     font-size: 1em;
 }
+
+ .scroll-container {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            padding: 20px 0;
+        }
+        .card-wrapper {
+            display: flex;
+            gap: 10px;
+            width: max-content;
+        }
+        .card {
+            width: 350px;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .card p {
+            padding: 10px;
+            font-size: 14px;                           
+        }
