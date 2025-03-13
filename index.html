@@ -284,6 +284,255 @@ https://templatemo.com/tm-557-grad-school
               </div>
           </div>
       </div>
+        <h2 className="Notice">Notice</h2>
+      <div class="gallery-Container">
+        <button class="arrow left-arrow">&#9665;</button>
+        <div class="gallery">
+            <img src="assets/images/a.jpeg" alt="Image 1">
+            <img src="assets/images/b.jpeg" alt="Image 2">
+            <img src="assets/images/c.jpeg" alt="Image 3">
+            <img src="assets/images/d.jpeg" alt="Image 4">
+            <img src="assets/images/e.jpeg" alt="Image 5">
+            <img src="assets/images/f.jpeg" alt="Image 6">
+        </div>
+        <button class="arrow right-arrow">&#9655;</button>
+    </div>
+    
+    <div class="preview-overlay">
+        <button class="close-preview">&times;</button>
+        <img src="" alt="Preview">
+    </div>
+    
+    <script>
+        const gallery = document.querySelector('.gallery');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+        const previewOverlay = document.querySelector('.preview-overlay');
+        const previewImage = document.querySelector('.preview-overlay img');
+        const closePreview = document.querySelector('.close-preview');
+        let index = 0;
+        let interval;
+        
+        function updateGallery() {
+            gallery.style.transform = `translateX(${-index * 600}px)`;
+        }
+        
+        function startScrolling() {
+            interval = setInterval(() => {
+                index = (index + 1) % gallery.children.length;
+                updateGallery();
+            }, 2000);
+        }
+        
+        rightArrow.addEventListener('click', () => {
+            index = (index + 1) % gallery.children.length;
+            updateGallery();
+        });
+        
+        leftArrow.addEventListener('click', () => {
+            index = (index - 1 + gallery.children.length) % gallery.children.length;
+            updateGallery();
+        });
+        
+        gallery.addEventListener('mouseenter', () => clearInterval(interval));
+        gallery.addEventListener('mouseleave', startScrolling);
+        
+        gallery.addEventListener('click', (event) => {
+            if (event.target.tagName === 'IMG') {
+                previewImage.src = event.target.src;
+                previewOverlay.style.display = 'flex';
+            }
+        });
+        
+        closePreview.addEventListener('click', () => {
+            previewOverlay.style.display = 'none';
+        });
+        
+        previewOverlay.addEventListener('click', (event) => {
+            if (event.target === previewOverlay) {
+                previewOverlay.style.display = 'none';
+            }
+        });
+        
+        startScrolling();
+    </script>
+    <style>
+      .gallery-Container {
+          width: 600px;
+          height: 400px;
+          overflow: hidden;
+          position: relative;
+          border-radius: 10px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .gallery {
+          display: flex;
+          width: max-content;
+          transition: transform 0.5s ease-in-out;
+      }
+      .gallery img {
+          width: 600px;
+          height: 400px;
+          object-fit:contain;
+          cursor: pointer;
+      }
+      .arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background-color: rgba(0, 0, 0, 0.5);
+          color: white;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+          font-size: 20px;
+          border-radius: 5px;
+      }
+      .left-arrow { left: 10px; }
+      .right-arrow { right: 10px; }
+      
+      /* Fullscreen Preview */
+      .preview-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          display: none;
+          justify-content: center;
+          align-items: center;
+      }
+      .preview-overlay img {
+          max-width: 90%;
+          max-height: 90%;
+          border-radius: 10px;
+      }
+      .close-preview {
+          position: absolute;
+          top: 65px;
+          right: 20px;
+          background: white;
+          color: black;
+          border: none;
+          padding: 10px;
+          font-size: 20px;
+          cursor: pointer;
+          border-radius: 5px;
+      }
+  </style>
+      <style>
+        .Notice{
+          color:#fff;
+        }
+        .gallery-Container {
+            width: 400px;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-left:500px;
+            margin-top:100px;
+        }
+        .gallery {
+            display: flex;
+            width: max-content;
+            transition: transform 0.5s ease-in-out;
+        }
+        .gallery img {
+            width: 400px;
+            height: 300px;
+            object-fit: contain;
+        }
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .left-arrow { left: 10px; }
+        .right-arrow { right: 10px; }
+    </style>
+      <style>
+        .gallery-container {
+            width: 100vw; /* Adjusted to 3/4 of the screen width */
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .card-wrapper {
+            display: flex;
+            gap: 20px;
+            animation: scroll 25s linear infinite;
+        }
+
+        .card img {
+            width: 400px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Duplicate images for smooth looping */
+        .gallery-wrapper {
+            display: flex;
+            width: fit-content;
+            gap:20px;
+        }
+        .scroll-container {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            padding: 20px 0;
+        }
+        .card-wrapper {
+            display: flex;
+            gap: 10px;
+            width: max-content;
+        }
+        .card {
+            width: 350px;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .card p {
+            padding: 10px;
+            font-size: 14px;                           
+        }
+    </style>
       <style>
 
         .gallery-container {
