@@ -284,99 +284,123 @@ https://templatemo.com/tm-557-grad-school
               </div>
           </div>
       </div>
-        <h2 className="Notice">Notice</h2>
+      <header style="
+      color: white;
+      width: 100%;
+      text-align: center;
+      margin-left: -10px;
+      padding: 10px 0;
+      font-size: 30px;
+      margin-top: 100px;
+      font-weight: bold;
+      margin-bottom: 20px;">Notice</header>
       <div class="gallery-Container">
-        <button class="arrow left-arrow">&#9665;</button>
         <div class="gallery">
-            <img src="assets/images/a.jpeg" alt="Image 1">
-            <img src="assets/images/b.jpeg" alt="Image 2">
-            <img src="assets/images/c.jpeg" alt="Image 3">
-            <img src="assets/images/d.jpeg" alt="Image 4">
-            <img src="assets/images/e.jpeg" alt="Image 5">
-            <img src="assets/images/f.jpeg" alt="Image 6">
+          <img src="/DeepthiCollege/assets/images/a.jpeg" alt="Image 1">
+          <img src="/DeepthiCollege/assets/images/b.jpeg" alt="Image 2">
+          <img src="/DeepthiCollege/assets/images/c.jpeg" alt="Image 3">
+          <img src="/DeepthiCollege/assets/images/d.jpeg" alt="Image 4">
+          <img src="/DeepthiCollege/assets/images/e.jpeg" alt="Image 5">
+          <img src="/DeepthiCollege/assets/images/f.jpeg" alt="Image 6">
         </div>
-        <button class="arrow right-arrow">&#9655;</button>
-    </div>
+        <button class="scroll-button left" onclick="scrollGallery(-1)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery(1)">&#10095;</button>
+      </div>
     
-    <div class="preview-overlay">
-        <button class="close-preview">&times;</button>
-        <img src="" alt="Preview">
-    </div>
+      <!-- Preview Modal -->
+      <div class="preview-modal">
+        <span class="close-button">&times;</span>
+        <img src="" alt="Preview Image">
+      </div>
     
-    <script>
+      <script>
+        let currentIndex = 0;
+        let autoScrollInterval;
         const gallery = document.querySelector('.gallery');
-        const leftArrow = document.querySelector('.left-arrow');
-        const rightArrow = document.querySelector('.right-arrow');
-        const previewOverlay = document.querySelector('.preview-overlay');
-        const previewImage = document.querySelector('.preview-overlay img');
-        const closePreview = document.querySelector('.close-preview');
-        let index = 0;
-        let interval;
-        
+        const images = document.querySelectorAll('.gallery img');
+        const totalImages = images.length;
+        const previewModal = document.querySelector('.preview-modal');
+        const previewImage = document.querySelector('.preview-modal img');
+        const closeButton = document.querySelector('.close-button');
+    
+        // Start auto-scroll
+        startAutoScroll();
+    
+        // Auto-scroll functionality
+        function startAutoScroll() {
+          autoScrollInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalImages;
+            updateGallery();
+          }, 3000); // Change image every 3 seconds
+        }
+    
+        // Stop auto-scroll on hover
+        gallery.addEventListener('mouseenter', () => {
+          clearInterval(autoScrollInterval);
+        });
+    
+        // Resume auto-scroll when not hovering
+        gallery.addEventListener('mouseleave', () => {
+          startAutoScroll();
+        });
+    
+        // Manual scroll functionality
+        function scrollGallery(direction) {
+          currentIndex = (currentIndex + direction + totalImages) % totalImages;
+          updateGallery();
+        }
+    
+        // Update gallery position
         function updateGallery() {
-            gallery.style.transform = `translateX(${-index * 600}px)`;
+          const offset = -currentIndex * 100;
+          gallery.style.transform = `translateX(${offset}%)`;
         }
-        
-        function startScrolling() {
-            interval = setInterval(() => {
-                index = (index + 1) % gallery.children.length;
-                updateGallery();
-            }, 2000);
-        }
-        
-        rightArrow.addEventListener('click', () => {
-            index = (index + 1) % gallery.children.length;
-            updateGallery();
+    
+        // Open preview modal on image click
+        images.forEach((img, index) => {
+          img.addEventListener('click', () => {
+            previewImage.src = img.src;
+            previewModal.style.display = 'flex';
+          });
         });
-        
-        leftArrow.addEventListener('click', () => {
-            index = (index - 1 + gallery.children.length) % gallery.children.length;
-            updateGallery();
+    
+        // Close preview modal
+        closeButton.addEventListener('click', () => {
+          previewModal.style.display = 'none';
         });
-        
-        gallery.addEventListener('mouseenter', () => clearInterval(interval));
-        gallery.addEventListener('mouseleave', startScrolling);
-        
-        gallery.addEventListener('click', (event) => {
-            if (event.target.tagName === 'IMG') {
-                previewImage.src = event.target.src;
-                previewOverlay.style.display = 'flex';
-            }
+    
+        // Close modal when clicking outside the image
+        previewModal.addEventListener('click', (e) => {
+          if (e.target === previewModal) {
+            previewModal.style.display = 'none';
+          }
         });
-        
-        closePreview.addEventListener('click', () => {
-            previewOverlay.style.display = 'none';
-        });
-        
-        previewOverlay.addEventListener('click', (event) => {
-            if (event.target === previewOverlay) {
-                previewOverlay.style.display = 'none';
-            }
-        });
-        
-        startScrolling();
-    </script>
-    <style>
-      .gallery-Container {
-          width: 600px;
-          height: 400px;
-          overflow: hidden;
+      </script>
+      <style>
+        .gallery-Container {
           position: relative;
+          width: 600px;
+          overflow: hidden;
+          border: 2px solid #ccc;
           border-radius: 10px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      .gallery {
+          margin-left:390px;
+          margin-top:10px;
+        }
+    
+        .gallery {
           display: flex;
-          width: max-content;
           transition: transform 0.5s ease-in-out;
-      }
-      .gallery img {
+        }
+    
+        .gallery img {
           width: 600px;
           height: 400px;
-          object-fit:cover;
+          object-fit: contain;
+          flex-shrink: 0;
           cursor: pointer;
-      }
-      .arrow {
+        }
+    
+        .scroll-button {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
@@ -385,81 +409,52 @@ https://templatemo.com/tm-557-grad-school
           border: none;
           padding: 10px;
           cursor: pointer;
-          font-size: 20px;
-          border-radius: 5px;
-      }
-      .left-arrow { left: 10px; }
-      .right-arrow { right: 10px; }
-      
-      /* Fullscreen Preview */
-      .preview-overlay {
+          font-size: 18px;
+          border-radius: 50%;
+          transition: background-color 0.3s;
+        }
+    
+        .scroll-button:hover {
+          background-color: rgba(0, 0, 0, 0.8);
+        }
+    
+        .left {
+          left: 10px;
+        }
+    
+        .right {
+          right: 10px;
+        }
+    
+        /* Preview Modal */
+        .preview-modal {
+          display: none;
           position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.8);
-          display: none;
+          background-color: rgba(0, 0, 0, 0.8);
           justify-content: center;
           align-items: center;
-      }
-      .preview-overlay img {
+          z-index: 1000;
+        }
+    
+        .preview-modal img {
           max-width: 90%;
           max-height: 90%;
           border-radius: 10px;
-      }
-      .close-preview {
+        }
+    
+        .close-button {
           position: absolute;
-          top: 65px;
+          top: 50px;
           right: 20px;
-          background: white;
-          color: black;
-          border: none;
-          padding: 10px;
-          font-size: 20px;
+          color: white;
+          font-size: 30px;
           cursor: pointer;
-          border-radius: 5px;
-      }
-  </style>
-      <style>
-        .Notice{
-          color:#fff;
         }
-        .gallery-Container {
-            width: 400px;
-            height: 300px;
-            overflow: hidden;
-            position: relative;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            margin-left:500px;
-            margin-top:100px;
-        }
-        .gallery {
-            display: flex;
-            width: max-content;
-            transition: transform 0.5s ease-in-out;
-        }
-        .gallery img {
-            width: 400px;
-            height: 300px;
-            object-fit:cover;
-        }
-        .arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            border-radius: 5px;
-        }
-        .left-arrow { left: 10px; }
-        .right-arrow { right: 10px; }
-    </style>
+      </style>
       <style>
         .gallery-container {
             width: 100vw; /* Adjusted to 3/4 of the screen width */
